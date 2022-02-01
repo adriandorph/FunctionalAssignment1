@@ -1,9 +1,5 @@
 open System
 
-// Define a function to construct a message to print
-let from whom =
-    sprintf "from %s" whom
-
 //Exercise 1.1
 let sqr x = x * x
 
@@ -55,5 +51,4 @@ let main argv =
     printfn "1.5 expected %s actual %s" "Hi Hi " (dup "Hi ")
     printfn "1.6 expected %s actual %s" "Hi Hi Hi " (dupn "Hi " 3)
     printfn "1.7 expected %d actual %d" 6 (bin (4, 2))
-    
     0 // return an integer exit code
