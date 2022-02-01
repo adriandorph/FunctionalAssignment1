@@ -1,5 +1,6 @@
 open System
 
+//Green
 //Exercise 1.1
 let sqr x = x * x
 
@@ -42,13 +43,121 @@ let rec bin ((n,k):int * int) : int =
     else
         bin ((n - 1), (k - 1)) + bin ((n - 1), k)
 
+//Yellow
+//Exercise 1.8
+let timediff ((h1,m1):int * int) ((h2,m2):int * int) : int =
+    let HDiff = (h2 - h1) * 60
+    let MDiff = m2 - m1
+    let total = HDiff + MDiff
+    if total > 60 * 12 then
+        -(24 * 60 - total)
+    else if total < 60 * -12 then
+        24 * 60 + total
+    else
+        total
+
+let timediffRaw ((h1,m1):int * int) ((h2,m2):int * int) : int =
+    let HDiff = (h2 - h1) * 60
+    let MDiff = m2 - m1
+    HDiff + MDiff
+
+//Exercise 1.9
+let minutes ((hours, minutes): int * int) : int =
+    timediffRaw (0,0) (hours, minutes)
+
+let curry (functio:int * int -> int) : int -> int -> int=
+    (fun x y -> functio (x, y))
+
+let uncurry (functio: int -> int -> int) : int * int -> int =
+    (fun (x,y) -> functio x y)
+
+
+//Testing
+let assertTrue (statement:bool) : string =
+    if statement then
+        "PASSED"
+    else 
+        "FAILED Expected: True Actual: False"
+
+let assertEqualInt (expected:int) (actual:int) : string =
+    if expected = actual then
+        "PASSED"
+    else
+        sprintf "FAILED Expected: %d Actual: %d" expected actual
+
+let assertEqualFloat (expected:float) (actual:float) : string =
+    if expected = actual then
+        "PASSED"
+    else
+        sprintf "FAILED Expected: %f Actual: %f" expected actual
+
+let assertEqualString (expected:string) (actual:string) : string =
+    if expected = actual then
+        "PASSED"
+    else
+        sprintf "FAILED Expected: %s Actual: %s" expected actual
+
+
+
+//Tests
+//Green
+let testSqr =
+    assertEqualInt 4 (sqr 2)
+
+let testPow =
+    assertEqualFloat 8.0 (pow 2.0 3.0)
+    
+let testSum =
+    assertEqualInt 15 (sum 5)
+
+let testFib =
+    assertEqualInt 3 (fib 4)
+
+let testDup = 
+    assertEqualString "Hi Hi " (dup "Hi ")
+
+let testDupn =
+    assertEqualString "Hi Hi Hi " (dupn "Hi " 3)
+
+let testBin =
+    assertEqualInt 6 (bin (4, 2))
+
+//Yellow
+let testTimediff =
+    assertEqualInt -10 (timediff (0,5) (23,55))
+
+let testTimediffRaw1 =
+    assertEqualInt -59 (timediffRaw (12,34) (11,35))
+
+let testTimediffRaw2 =
+    assertEqualInt 61 (timediffRaw (12,34) (13,35))
+
+let testMinutes =
+    assertEqualInt 864 (minutes (14, 24))
+
+let testCurry =
+    assertEqualInt 8 (curry (fun (x, y) -> (x + y)) 5 3)
+
+let testUncurry =
+    assertEqualInt 8 (uncurry (fun x y -> x + y) (5, 3))
+
+
 [<EntryPoint>]
 let main argv =
-    printfn "1.1 expected %d actual %d" 4 (sqr 2)
-    printfn "1.2 expected %f actual %f" 8.0 (pow 2.0 3.0)
-    printfn "1.3 expected %d actual %d" 15 (sum 5)
-    printfn "1.4 expected %d actual %d" 3 (fib 4)
-    printfn "1.5 expected %s actual %s" "Hi Hi " (dup "Hi ")
-    printfn "1.6 expected %s actual %s" "Hi Hi Hi " (dupn "Hi " 3)
-    printfn "1.7 expected %d actual %d" 6 (bin (4, 2))
+    printfn "GREEN Exercises:"
+    printfn "1.1 %s" testSqr
+    printfn "1.2 %s" testPow
+    printfn "1.3 %s" testSum
+    printfn "1.4 %s" testFib
+    printfn "1.5 %s" testDup
+    printfn "1.6 %s" testDupn
+    printfn "1.7 %s" testBin
+
+    printfn "\nYELLOW Exercises"
+    printfn "1.8 %s" testTimediff
+    printfn "1.8 raw %s" testTimediffRaw1
+    printfn "1.8 raw %s" testTimediffRaw2
+    printfn "1.9 %s" testMinutes
+    printfn "1.10 curry %s" testCurry
+    printfn "1.10 uncurry %s" testUncurry
     0 // return an integer exit code
