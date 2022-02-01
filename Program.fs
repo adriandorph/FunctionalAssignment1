@@ -1,5 +1,3 @@
-// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
-
 open System
 
 // Define a function to construct a message to print
@@ -50,12 +48,12 @@ let rec bin ((n,k):int * int) : int =
 
 [<EntryPoint>]
 let main argv =
-    printfn "1.1 %d" (sqr 2)
-    printfn "1.2 %f" (pow 2.0 3.0)
-    printfn "1.3 %d" (sum 5)
-    printfn "1.4 %d" (fib 4)
-    printfn "1.5 %s" (dup "Hi ")
-    printfn "1.6 %s" (dupn "Hi " 3)
-    printfn "1.7 %d" (bin (4, 2))
+    printfn "1.1 expected %d actual %d" 4 (sqr 2)
+    printfn "1.2 expected %f actual %f" 8.0 (pow 2.0 3.0)
+    printfn "1.3 expected %d actual %d" 15 (sum 5)
+    printfn "1.4 expected %d actual %d" 3 (fib 4)
+    printfn "1.5 expected %s actual %s" "Hi Hi " (dup "Hi ")
+    printfn "1.6 expected %s actual %s" "Hi Hi Hi " (dupn "Hi " 3)
+    printfn "1.7 expected %d actual %d" 6 (bin (4, 2))
     
     0 // return an integer exit code
