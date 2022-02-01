@@ -141,7 +141,6 @@ let testCurry =
 let testUncurry =
     assertEqualInt 8 (uncurry (fun x y -> x + y) (5, 3))
 
-
 [<EntryPoint>]
 let main argv =
     printfn "GREEN Exercises:"
