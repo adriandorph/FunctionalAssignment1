@@ -46,7 +46,7 @@ let rec bin ((n,k):int * int) : int =
 
 //Yellow
 //Exercise 1.8
-let timediff ((h1,m1):int * int) ((h2,m2):int * int) : int =
+let timediffReal ((h1,m1):int * int) ((h2,m2):int * int) : int =
     let HDiff = (h2 - h1) * 60
     let MDiff = m2 - m1
     let total = HDiff + MDiff
@@ -57,14 +57,14 @@ let timediff ((h1,m1):int * int) ((h2,m2):int * int) : int =
     else
         total
 
-let timediffRaw ((h1,m1):int * int) ((h2,m2):int * int) : int =
+let timediff ((h1,m1):int * int) ((h2,m2):int * int) : int =
     let HDiff = (h2 - h1) * 60
     let MDiff = m2 - m1
     HDiff + MDiff
 
 //Exercise 1.9
 let minutes ((hours, minutes): int * int) : int =
-    timediffRaw (0,0) (hours, minutes)
+    timediff (0,0) (hours, minutes)
 
 //Exercise 1.10
 let curry (functio:int * int -> int) : int -> int -> int=
@@ -166,14 +166,14 @@ let testBin =
     assertEqualInt 6 (bin (4, 2))
 
 //Yellow
-let testTimediff =
-    assertEqualInt -10 (timediff (0,5) (23,55))
+let testTimediffReal =
+    assertEqualInt -10 (timediffReal (0,5) (23,55))
 
-let testTimediffRaw1 =
-    assertEqualInt -59 (timediffRaw (12,34) (11,35))
+let testTimediff1 =
+    assertEqualInt -59 (timediff (12,34) (11,35))
 
-let testTimediffRaw2 =
-    assertEqualInt 61 (timediffRaw (12,34) (13,35))
+let testTimediff2 =
+    assertEqualInt 61 (timediff (12,34) (13,35))
 
 let testMinutes =
     assertEqualInt 864 (minutes (14, 24))
@@ -245,13 +245,15 @@ let main argv =
     printfn "1.7 %s" testBin
 
     printfn "\nYELLOW Exercises"
-    printfn "1.8 %s" testTimediff
-    printfn "1.8 raw %s" testTimediffRaw1
-    printfn "1.8 raw %s" testTimediffRaw2
+    printfn "1.8 %s" testTimediffReal
+    printfn "1.8 raw %s" testTimediff1
+    printfn "1.8 raw %s" testTimediff2
     printfn "1.9 %s" testMinutes
     printfn "1.10 curry %s" testCurry
     printfn "1.10 uncurry %s" testUncurry
     printfn "1.11 %s" testEmpty
+    
+    printfn "\nRED Exercises"
     printfn "1.12 %s" testAdd
     printfn "1.13 %s" testHello
     printfn "1.14 %s" testLetterPoint
