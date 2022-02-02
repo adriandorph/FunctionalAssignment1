@@ -67,10 +67,10 @@ let minutes ((hours, minutes): int * int) : int =
     timediff (0,0) (hours, minutes)
 
 //Exercise 1.10
-let curry (functio:int * int -> int) : int -> int -> int=
+let curry functio =
     (fun x y -> functio (x, y))
 
-let uncurry (functio: int -> int -> int) : int * int -> int =
+let uncurry functio =
     (fun (x,y) -> functio x y)
 
 //Exercise 1.11
@@ -89,7 +89,7 @@ let add newPosition ((character, integer):char * int) (word:(int -> char * int))
 
 //Exercise 1.13
 let hello =
-    add 5 ('O', 5) (add 4 ('L', 4) (add 3 ('L', 3) (add 2 ('E', 2) (add 1 ('H', 1) (empty (char 0, 0))))))
+    add 4 ('O', 1) (add 3 ('L', 1) (add 2 ('L', 1) (add 1 ('E', 1) (add 0 ('H', 4) (empty (char 0, 0))))))
 
 
 //Exercise 1.14
@@ -216,9 +216,8 @@ let testHello =
     let character2, integer2 = helloWord 2
     let character3, integer3 = helloWord 3
     let character4, integer4 = helloWord 4
-    let character5, integer5 = helloWord 5
     //Assert
-    sprintf "%s %s\n%s %s\n%s %s\n%s %s\n%s %s\n%s %s" (assertEqualChar (char 0) character0) (assertEqualInt 0 integer0) (assertEqualChar 'H' character1) (assertEqualInt 1 integer1) (assertEqualChar 'E' character2) (assertEqualInt 2 integer2) (assertEqualChar 'L' character3) (assertEqualInt 3 integer3) (assertEqualChar 'L' character4) (assertEqualInt 4 integer4) (assertEqualChar 'O' character5) (assertEqualInt 5 integer5)
+    sprintf "%s %s\n%s %s\n%s %s\n%s %s\n%s %s" (assertEqualChar 'H' character0) (assertEqualInt 4 integer0) (assertEqualChar 'E' character1) (assertEqualInt 1 integer1) (assertEqualChar 'L' character2) (assertEqualInt 1 integer2) (assertEqualChar 'L' character3) (assertEqualInt 1 integer3) (assertEqualChar 'O' character4) (assertEqualInt 1 integer4)
 
 let testLetterPoint =
     //Arrange
@@ -226,11 +225,11 @@ let testLetterPoint =
         hello pos
     
     //Act
-    let actual1 = singleLetterScore helloWord 3
-    let actual2 = doubleLetterScore helloWord 1
-    let actual3 = trippleLetterScore helloWord 1
+    let actual1 = singleLetterScore helloWord 0
+    let actual2 = doubleLetterScore helloWord 0
+    let actual3 = trippleLetterScore helloWord 0
 
-    sprintf "%s %s %s" (assertEqualInt 3 actual1) (assertEqualInt 2 actual2) (assertEqualInt 3 actual3)
+    sprintf "%s %s %s" (assertEqualInt 4 actual1) (assertEqualInt 8 actual2) (assertEqualInt 12 actual3)
 
 
 [<EntryPoint>]
@@ -252,7 +251,7 @@ let main argv =
     printfn "1.10 curry %s" testCurry
     printfn "1.10 uncurry %s" testUncurry
     printfn "1.11 %s" testEmpty
-    
+
     printfn "\nRED Exercises"
     printfn "1.12 %s" testAdd
     printfn "1.13 %s" testHello
