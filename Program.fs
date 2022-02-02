@@ -1,4 +1,5 @@
 open System
+//Some parts of the code have been copied from the assignment document examples
 
 //Green
 //Exercise 1.1
@@ -65,12 +66,48 @@ let timediffRaw ((h1,m1):int * int) ((h2,m2):int * int) : int =
 let minutes ((hours, minutes): int * int) : int =
     timediffRaw (0,0) (hours, minutes)
 
+//Exercise 1.10
 let curry (functio:int * int -> int) : int -> int -> int=
     (fun x y -> functio (x, y))
 
 let uncurry (functio: int -> int -> int) : int * int -> int =
     (fun (x,y) -> functio x y)
 
+//Exercise 1.11
+let empty pair : int -> char * int =
+    (fun x -> pair)
+
+//RED
+//Exercise 1.12
+let add newPosition ((character, integer):char * int) (word:(int -> char * int)) = 
+    fun pos -> (
+        if pos = newPosition then
+            (character, integer)
+        else
+            word pos
+        )
+
+//Exercise 1.13
+let hello =
+    add 5 ('O', 5) (add 4 ('L', 4) (add 3 ('L', 3) (add 2 ('E', 2) (add 1 ('H', 1) (empty (char 0, 0))))))
+
+
+//Exercise 1.14
+let singleLetterScore hello pos =
+    let character, point = hello pos
+    point
+
+let doubleLetterScore hello pos =
+    (singleLetterScore hello pos) * 2
+
+let trippleLetterScore hello pos =
+    (singleLetterScore hello pos) * 3
+
+
+
+
+//The rest is only for testing
+//I know there is an easier way to test, but I wanted to do it like this for fun
 
 //Testing
 let assertTrue (statement:bool) : string =
@@ -96,6 +133,12 @@ let assertEqualString (expected:string) (actual:string) : string =
         "PASSED"
     else
         sprintf "FAILED Expected: %s Actual: %s" expected actual
+
+let assertEqualChar (expected:char) (actual:char) : string =
+    if expected = actual then
+        "PASSED"
+    else
+        sprintf "FAILED Expected: %c Actual: %c" expected actual
 
 
 
@@ -141,6 +184,55 @@ let testCurry =
 let testUncurry =
     assertEqualInt 8 (uncurry (fun x y -> x + y) (5, 3))
 
+let testEmpty =
+    //Arrange
+    let funct = empty ('a',3)
+    //Act
+    let charater, integer = funct 4
+    //Assert
+    assertEqualInt 3 integer + " " + assertEqualChar 'a' charater
+
+//RED
+let testAdd =
+    //Arrange
+    let theLetterA = empty ('A', 1)
+    let theLettersAB = add 1 ('B', 3) theLetterA
+
+    //Act
+    let character0, integer0 = theLettersAB 0
+    let character1, integer1 = theLettersAB 1
+    let character42, integer42 = theLettersAB 42
+    //Assert
+    sprintf "%s %s\n%s %s\n%s %s" (assertEqualChar 'A' character0) (assertEqualInt 1 integer0) (assertEqualChar 'B' character1) (assertEqualInt 3 integer1) (assertEqualChar 'A' character42) (assertEqualInt 1 integer42)
+
+let testHello =
+    //Arrange
+    let helloWord pos :char * int=
+        hello pos
+
+    //Act
+    let character0, integer0 = helloWord 0
+    let character1, integer1 = helloWord 1
+    let character2, integer2 = helloWord 2
+    let character3, integer3 = helloWord 3
+    let character4, integer4 = helloWord 4
+    let character5, integer5 = helloWord 5
+    //Assert
+    sprintf "%s %s\n%s %s\n%s %s\n%s %s\n%s %s\n%s %s" (assertEqualChar (char 0) character0) (assertEqualInt 0 integer0) (assertEqualChar 'H' character1) (assertEqualInt 1 integer1) (assertEqualChar 'E' character2) (assertEqualInt 2 integer2) (assertEqualChar 'L' character3) (assertEqualInt 3 integer3) (assertEqualChar 'L' character4) (assertEqualInt 4 integer4) (assertEqualChar 'O' character5) (assertEqualInt 5 integer5)
+
+let testLetterPoint =
+    //Arrange
+    let helloWord pos :char * int =
+        hello pos
+    
+    //Act
+    let actual1 = singleLetterScore helloWord 3
+    let actual2 = doubleLetterScore helloWord 1
+    let actual3 = trippleLetterScore helloWord 1
+
+    sprintf "%s %s %s" (assertEqualInt 3 actual1) (assertEqualInt 2 actual2) (assertEqualInt 3 actual3)
+
+
 [<EntryPoint>]
 let main argv =
     printfn "GREEN Exercises:"
@@ -159,4 +251,8 @@ let main argv =
     printfn "1.9 %s" testMinutes
     printfn "1.10 curry %s" testCurry
     printfn "1.10 uncurry %s" testUncurry
+    printfn "1.11 %s" testEmpty
+    printfn "1.12 %s" testAdd
+    printfn "1.13 %s" testHello
+    printfn "1.14 %s" testLetterPoint
     0 // return an integer exit code
