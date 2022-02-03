@@ -68,22 +68,22 @@ let minutes ((hours, minutes): int * int) : int =
 
 //Exercise 1.10
 let curry functio =
-    (fun x y -> functio (x, y))
+    fun x y -> functio (x, y)
 
 let uncurry functio =
-    (fun (x,y) -> functio x y)
+    fun (x,y) -> functio x y
 
 //Exercise 1.11
 let empty pair : int -> char * int =
-    (fun x -> pair)
+    fun x -> pair
 
 //RED
 //Exercise 1.12
 let add newPosition ((character, integer):char * int) (word:(int -> char * int)) = 
     fun pos -> (
-        if pos = newPosition then
-            (character, integer)
-        else
+        if pos = newPosition then 
+            (character, integer) 
+        else 
             word pos
         )
 
